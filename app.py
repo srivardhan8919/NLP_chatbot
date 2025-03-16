@@ -4,11 +4,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import knowledge_base
 import datetime
+import pytz
 
 app = Flask(__name__)
 
 def get_time_based_greeting():
-    current_hour = datetime.datetime.now().hour
+    pz = pytz.timezone('Asia/Kolkata')
+    current_hour = datetime.datetime.now(pz).hour
     if 5 <= current_hour < 12:
         return "Good morning!"
     elif 12 <= current_hour < 17:
