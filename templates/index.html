@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Inquiry Chatbot</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Vaagdevi College Inquiry Chatbot</h1>
+    </header>
+
+    <section id="chat-box" class="chat-box"></section>
+    <section id="recommendations" class="recommendations"></section>
+
+    <div class="input-container">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH8icQsGQBJxcR-QkS8uQnH2HV5W2mY0Cn7g&s" alt="Student" class="student-image">
+      <input id="user-input" type="text" placeholder="Ask me anything about the college...">
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const recommendationsList = [
+    "Tell me about Vaagdevi College of Engineering",
+    "What undergraduate programs does Vaagdevi College offer or courses offered?",
+    "How do I apply for B.Tech programs?",
+    "What entrance exams are accepted for admission?",
+    "What's the admission process for international students?",
+    "Where can I find the academic calendar?",
+    "What scholarship opportunities are available?",
+    "How do I apply for financial aid?",
+    "Are there scholarships for postgraduate students?",
+    "What hostel facilities are available?",
+    "Are there medical facilities on campus?",
+    "What transportation options are available?",
+    "What's the student-faculty ratio?",
+    "What research opportunities are available?",
+    "How are labs equipped for practical learning?",
+    "Does the college offer study abroad programs?",
+    "What's the recent placement record?",
+    "Which companies regularly recruit here?",
+    "What career support services are offered?",
+    "What's the average salary package?",
+    "What extracurricular activities are available?",
+    "How does the college support mental health?",
+    "What security measures are in place?",
+    "How does the incubation center support startups?",
+    "What language training programs are available?",
+    "Are there personality development workshops?",
+    "How do I contact specific departments?",
+    "What's the grievance redressal process?",
+    "Where can I find exam schedules?",
+    "What accreditations does the college hold?",
+    "What makes Vaagdevi unique among engineering colleges?",
+    "How does the college promote innovation?",
+    "Can I visit the campus before admission?",
+    "Are there any internship opportunities for students?",
+    "What are the placement statistics for the last few years?",
+    "What sports facilities are available?"
+];
+
+
+    // Wait for the DOM to load before setting event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const chatBox = document.getElementById('chat-box');
+      
+      const greetingMessage = "{{ greeting }}";
+      typeOutResponse(greetingMessage);
+      const userInput = document.getElementById('user-input');
+      const sendButton = document.getElementById('send-button');
+
+      // Send message on button click
+      sendButton.addEventListener('click', sendMessage);
+
+      // Send message on pressing Enter key
+      userInput.addEventListener('keypress', event => {
+        if (event.key === 'Enter') {
+          sendMessage();
+        }
+      });
+
+      // Update recommendations on input change
+      userInput.addEventListener('input', updateRecommendations);
+    });
+
+    function appendMessage(container, type, message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.innerHTML = `<strong>${message}</strong>`;
+      container.appendChild(messageDiv);
+    }
+
+    function sendMessage() {
+      const inputField = document.getElementById('user-input');
+      const userInput = inputField.value.trim();
+      if (!userInput) {
+        alert("Please enter a message.");
+        return;
+      }
+
+      const chatBox = document.getElementById('chat-box');
+      appendMessage(chatBox, 'user', `You: ${userInput}`);
+
+      // Clear input field
+      inputField.value = '';
+
+      // Clear recommendations after sending a message
+      document.getElementById('recommendations').innerHTML = '';
+
+      // Send data as JSON
+      fetch('/get_response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_input: userInput })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.response) {
+          typeOutResponse(data.response);
+        } else {
+          appendMessage(chatBox, 'error', 'Bot: Response unavailable!');
+        }
+        scrollChatToBottom(chatBox);
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        appendMessage(chatBox, 'error', 'Bot: There was an error processing your request.');
+      });
+    }
+
+    // Helper function to append messages
+    function appendMessage(container, type, message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.innerHTML = `<strong>${message}</strong>`;
+      container.appendChild(messageDiv);
+    }
+
+    // Function to simulate typing effect for bot response
+    function typeOutResponse(response) {
+      const chatBox = document.getElementById('chat-box');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message bot';
+      messageDiv.innerHTML = '<strong>Bot:</strong> ';
+      chatBox.appendChild(messageDiv);
+
+      let index = 0;
+      const typingSpeed = 50; // milliseconds per character
+      const typingInterval = setInterval(() => {
+        if (index < response.length) {
+          messageDiv.innerHTML += response[index++];
+        } else {
+          clearInterval(typingInterval);
+          scrollChatToBottom(chatBox);
+        }
+      }, typingSpeed);
+    }
+
+    // Scroll chat box to the bottom
+    function scrollChatToBottom(container) {
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function updateRecommendations() {
+    const input = document.getElementById('user-input').value.toLowerCase();
+    const recommendationsDiv = document.getElementById('recommendations');
+    recommendationsDiv.innerHTML = '';
+
+    // Show recommendations only when input is provided
+    if (!input) return;
+
+    const filteredRecommendations = recommendationsList.filter(rec => rec.toLowerCase().includes(input)).slice(0,2);
+
+    filteredRecommendations.forEach(rec => {
+        const recElement = document.createElement('div');
+        recElement.className = 'recommendation-item';
+        recElement.innerText = rec;
+        recElement.addEventListener('click', () => {
+        document.getElementById('user-input').value = rec;
+        recommendationsDiv.innerHTML = '';
+        sendMessage(); // Automatically send the selected recommendation
+        });
+        recommendationsDiv.appendChild(recElement);
+    });
+    }
+
+  </script>
+</body>
+</html>
