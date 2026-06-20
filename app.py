@@ -24,7 +24,7 @@ def contains_profanity(text):
 
 # --- Keep-Alive Ping Thread ---
 def keep_alive_ping():
-    """Pings the Render URL every 14 minutes to prevent the service from sleeping."""
+    """Pings the Render URL every 5 minutes to prevent the service from sleeping."""
     # RENDER_EXTERNAL_URL is automatically provided by Render
     url = os.environ.get("RENDER_EXTERNAL_URL", "http://127.0.0.1:5000")
     if not url.startswith("http"):
@@ -32,7 +32,7 @@ def keep_alive_ping():
     
     while True:
         try:
-            time.sleep(14 * 60) # 14 minutes
+            time.sleep(5 * 60) # 5 minutes
             print(f"[{datetime.datetime.now()}] Sending keep-alive ping to {url}/health")
             requests.get(f"{url}/health", timeout=10)
         except Exception as e:
