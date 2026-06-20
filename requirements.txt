@@ -1,6 +1,7 @@
-﻿Flask==3.0.3
+Flask==3.0.3
 gunicorn==23.0.0
-nltk==3.9.1
 scikit-learn==1.6.1
 scipy==1.15.2
 pytz==2024.1
+numpy==2.1.2
+requests==2.31.0

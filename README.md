@@ -4,21 +4,22 @@
 This is an **NLP-based chatbot** designed to provide basic information about Vaagdevi College of Engineering. It helps users get answers to frequently asked questions related to courses, facilities, admission, placements, and more.
 
 ## 🚀 Features
-- Answer FAQs related to the college
-- NLP-based response generation
-- Deployed on **Render** for public access
-- Interactive web interface with **Flask & HTML/CSS**
+- **Smart NLP Matching**: Answers FAQs related to the college using TF-IDF and Cosine Similarity.
+- **Premium UI**: Modern, responsive glassmorphism interface with dark/light mode support, chat bubbles, and typing indicators.
+- **Always-On**: Deployed on **Render** with a self-ping background thread to prevent the free tier from sleeping.
+- **Robust**: Includes a profanity filter, fallback responses, and health-check endpoints.
+- **Persona Aware**: Capable of answering questions about itself and its creator.
 
 ## 🛠 Tech Stack
-- **Backend:** Python, Flask
-- **NLP:** Natural Language Processing (NLTK, spaCy)
-- **Frontend:** HTML, CSS, JavaScript
-- **Database:** JSON-based knowledge base
+- **Backend:** Python, Flask, Gunicorn
+- **NLP:** scikit-learn (TF-IDF Vectorizer, Cosine Similarity), NumPy
+- **Frontend:** HTML, CSS (Custom Properties for Theming), Vanilla JavaScript
+- **Database:** JSON-like dictionary structure in `knowledge_base.py`
 - **Deployment:** Render (Free Tier)
 
 ## 📂 Project Structure
 ```
-NLP_Clg_chat_bot/
+NLP_chatbot/
 │-- static/
 │   ├── styles.css
 │-- templates/
@@ -26,6 +27,7 @@ NLP_Clg_chat_bot/
 │-- app.py
 │-- knowledge_base.py
 │-- requirements.txt
+│-- Procfile
 │-- README.md
 ```
 
@@ -62,7 +64,7 @@ Open your browser and go to `http://127.0.0.1:5000/`
 ### 1️⃣ Push Code to GitHub
 ```sh
 git add .
-git commit -m "Initial commit"
+git commit -m "Modernize UI and add keep-alive"
 git push origin main
 ```
 
@@ -71,22 +73,17 @@ git push origin main
 - Create a **new web service**
 - Connect your GitHub repository
 - Set the **Build Command**: `pip install -r requirements.txt`
-- Set the **Start Command**: `python app.py`
+- Set the **Start Command**: `gunicorn app:app --workers 2 --threads 2 --preload`
+- The application will automatically detect its Render URL (via `RENDER_EXTERNAL_URL`) and ping itself every 14 minutes to prevent sleep.
 - Deploy & Get Your Live URL 🎉
 
 ---
 
 ## 💡 Usage
 1. Open the deployed link.
-2. Enter your question about the college.
-3. The chatbot will provide an accurate response.
-
----
-
-## 🛠 Troubleshooting
-- If Flask doesn’t start, check the Python version (`python --version`).
-- Ensure all dependencies are installed: `pip install -r requirements.txt`
-- If deployment fails on Render, check logs for errors.
+2. Toggle between Dark and Light mode using the sun/moon icon.
+3. Enter your question about the college or click a suggested chip.
+4. The chatbot will provide an accurate response based on the knowledge base.
 
 ---
 

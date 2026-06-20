@@ -1,195 +1,256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>College Inquiry Chatbot</title>
+  <title>Vaagdevi College Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/styles.css">
+  <!-- SEO tags -->
+  <meta name="description" content="AI Chatbot for Vaagdevi College of Engineering">
 </head>
 <body>
-  <div class="container">
+  <!-- Lightweight CSS Animated Waves Background -->
+  <div class="css-waves-bg">
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+      <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+      </defs>
+      <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" />
+        <use xlink:href="#gentle-wave" x="48" y="3" />
+        <use xlink:href="#gentle-wave" x="48" y="5" />
+        <use xlink:href="#gentle-wave" x="48" y="7" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="app-container">
     <header class="header">
-      <h1>Vaagdevi College Inquiry Chatbot</h1>
+      <div class="header-content">
+        <div class="avatar header-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/></svg>
+        </div>
+        <h1>Vaagdevi AI Assistant</h1>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
     </header>
 
-    <section id="chat-box" class="chat-box"></section>
-    <section id="recommendations" class="recommendations"></section>
-
-    <div class="input-container">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH8icQsGQBJxcR-QkS8uQnH2HV5W2mY0Cn7g&s" alt="Student" class="student-image">
-      <input id="user-input" type="text" placeholder="Ask me anything about the college...">
-      <button id="send-button">Send</button>
+    <main id="chat-box" class="chat-box"></main>
+    
+    <div class="input-area">
+      <div id="recommendations" class="recommendations"></div>
+      <div class="input-container">
+        <input id="user-input" type="text" placeholder="Ask about admissions, placements, courses..." autocomplete="off">
+        <button id="send-button" aria-label="Send message">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
     const recommendationsList = [
-    "Tell me about Vaagdevi College of Engineering",
-    "What undergraduate programs does Vaagdevi College offer or courses offered?",
-    "How do I apply for B.Tech programs?",
-    "What entrance exams are accepted for admission?",
-    "What's the admission process for international students?",
-    "Where can I find the academic calendar?",
-    "What scholarship opportunities are available?",
-    "How do I apply for financial aid?",
-    "Are there scholarships for postgraduate students?",
-    "What hostel facilities are available?",
-    "Are there medical facilities on campus?",
-    "What transportation options are available?",
-    "What's the student-faculty ratio?",
-    "What research opportunities are available?",
-    "How are labs equipped for practical learning?",
-    "Does the college offer study abroad programs?",
-    "What's the recent placement record?",
-    "Which companies regularly recruit here?",
-    "What career support services are offered?",
-    "What's the average salary package?",
-    "What extracurricular activities are available?",
-    "How does the college support mental health?",
-    "What security measures are in place?",
-    "How does the incubation center support startups?",
-    "What language training programs are available?",
-    "Are there personality development workshops?",
-    "How do I contact specific departments?",
-    "What's the grievance redressal process?",
-    "Where can I find exam schedules?",
-    "What accreditations does the college hold?",
-    "What makes Vaagdevi unique among engineering colleges?",
-    "How does the college promote innovation?",
-    "Can I visit the campus before admission?",
-    "Are there any internship opportunities for students?",
-    "What are the placement statistics for the last few years?",
-    "What sports facilities are available?"
-];
+      "Tell me about Vaagdevi College",
+      "What courses are offered?",
+      "How do I apply for B.Tech?",
+      "What's the placement record?",
+      "Are there hostel facilities?",
+      "Who are you?"
+    ];
 
-
-    // Wait for the DOM to load before setting event listeners
     document.addEventListener('DOMContentLoaded', () => {
+      // Theme handling
+      const themeToggle = document.getElementById('theme-toggle');
+      const moonIcon = document.getElementById('moon-icon');
+      const sunIcon = document.getElementById('sun-icon');
+      const htmlElement = document.documentElement;
+      
+      // Check system preference or saved preference
+      const savedTheme = localStorage.getItem('theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      
+      setTheme(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+      });
+
+      function setTheme(theme) {
+        htmlElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          moonIcon.style.display = 'none';
+          sunIcon.style.display = 'block';
+        } else {
+          moonIcon.style.display = 'block';
+          sunIcon.style.display = 'none';
+        }
+      }
 
       const chatBox = document.getElementById('chat-box');
-      
-      const greetingMessage = "{{ greeting }}";
-      typeOutResponse(greetingMessage);
       const userInput = document.getElementById('user-input');
       const sendButton = document.getElementById('send-button');
 
-      // Send message on button click
-      sendButton.addEventListener('click', sendMessage);
+      // Add greeting
+      const greetingMessage = "{{ greeting }}";
+      if(greetingMessage) {
+         addBotMessage(greetingMessage);
+      }
 
-      // Send message on pressing Enter key
+      sendButton.addEventListener('click', sendMessage);
       userInput.addEventListener('keypress', event => {
-        if (event.key === 'Enter') {
-          sendMessage();
-        }
+        if (event.key === 'Enter') sendMessage();
       });
 
-      // Update recommendations on input change
       userInput.addEventListener('input', updateRecommendations);
     });
 
-    function appendMessage(container, type, message) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${type}`;
-      messageDiv.innerHTML = `<strong>${message}</strong>`;
-      container.appendChild(messageDiv);
+    function addMessage(text, isUser) {
+      const chatBox = document.getElementById('chat-box');
+      const messageWrapper = document.createElement('div');
+      messageWrapper.className = `message-wrapper ${isUser ? 'user' : 'bot'}`;
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      if (isUser) {
+        avatar.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>';
+      } else {
+        avatar.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/></svg>';
+      }
+
+      const messageContent = document.createElement('div');
+      messageContent.className = 'message-content';
+      
+      // Handle links in text simply
+      const formattedText = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+      messageContent.innerHTML = formattedText;
+
+      if (!isUser) {
+        messageWrapper.appendChild(avatar);
+      }
+      messageWrapper.appendChild(messageContent);
+      if (isUser) {
+        messageWrapper.appendChild(avatar);
+      }
+
+      chatBox.appendChild(messageWrapper);
+      scrollChatToBottom();
+      return messageContent; // Return in case we want to type out
+    }
+
+    function addBotMessage(text) {
+      const contentDiv = addMessage("", false);
+      let index = 0;
+      const typingSpeed = 20; // fast typing
+      const typingInterval = setInterval(() => {
+        if (index < text.length) {
+          if(text.includes('http')) {
+              contentDiv.innerHTML = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+              clearInterval(typingInterval);
+              scrollChatToBottom();
+              return;
+          }
+          // Use textContent instead of innerText to perfectly preserve spaces
+          contentDiv.textContent += text[index++];
+          scrollChatToBottom();
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, typingSpeed);
+    }
+
+    function showTypingIndicator() {
+      const chatBox = document.getElementById('chat-box');
+      const typingWrapper = document.createElement('div');
+      typingWrapper.id = 'typing-indicator';
+      typingWrapper.className = `message-wrapper bot`;
+      
+      typingWrapper.innerHTML = `
+        <div class="avatar"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/></svg></div>
+        <div class="message-content typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+      `;
+      chatBox.appendChild(typingWrapper);
+      scrollChatToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const typingIndicator = document.getElementById('typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
     }
 
     function sendMessage() {
       const inputField = document.getElementById('user-input');
-      const userInput = inputField.value.trim();
-      if (!userInput) {
-        alert("Please enter a message.");
-        return;
-      }
+      const userInputText = inputField.value.trim();
+      if (!userInputText) return;
 
-      const chatBox = document.getElementById('chat-box');
-      appendMessage(chatBox, 'user', `You: ${userInput}`);
-
-      // Clear input field
+      addMessage(userInputText, true);
       inputField.value = '';
-
-      // Clear recommendations after sending a message
       document.getElementById('recommendations').innerHTML = '';
 
-      // Send data as JSON
+      showTypingIndicator();
+
       fetch('/get_response', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ user_input: userInput })
+        body: JSON.stringify({ user_input: userInputText })
       })
       .then(response => response.json())
       .then(data => {
+        removeTypingIndicator();
         if (data.response) {
-          typeOutResponse(data.response);
+          addBotMessage(data.response);
         } else {
-          appendMessage(chatBox, 'error', 'Bot: Response unavailable!');
+          addBotMessage('Sorry, response unavailable!');
         }
-        scrollChatToBottom(chatBox);
       })
       .catch(err => {
         console.error('Error:', err);
-        appendMessage(chatBox, 'error', 'Bot: There was an error processing your request.');
+        removeTypingIndicator();
+        addBotMessage('Sorry, there was an error processing your request.');
       });
     }
 
-    // Helper function to append messages
-    function appendMessage(container, type, message) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${type}`;
-      messageDiv.innerHTML = `<strong>${message}</strong>`;
-      container.appendChild(messageDiv);
-    }
-
-    // Function to simulate typing effect for bot response
-    function typeOutResponse(response) {
+    function scrollChatToBottom() {
       const chatBox = document.getElementById('chat-box');
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'message bot';
-      messageDiv.innerHTML = '<strong>Bot:</strong> ';
-      chatBox.appendChild(messageDiv);
-
-      let index = 0;
-      const typingSpeed = 50; // milliseconds per character
-      const typingInterval = setInterval(() => {
-        if (index < response.length) {
-          messageDiv.innerHTML += response[index++];
-        } else {
-          clearInterval(typingInterval);
-          scrollChatToBottom(chatBox);
-        }
-      }, typingSpeed);
-    }
-
-    // Scroll chat box to the bottom
-    function scrollChatToBottom(container) {
-      container.scrollTop = container.scrollHeight;
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     function updateRecommendations() {
-    const input = document.getElementById('user-input').value.toLowerCase();
-    const recommendationsDiv = document.getElementById('recommendations');
-    recommendationsDiv.innerHTML = '';
+      const input = document.getElementById('user-input').value.toLowerCase();
+      const recommendationsDiv = document.getElementById('recommendations');
+      recommendationsDiv.innerHTML = '';
 
-    // Show recommendations only when input is provided
-    if (!input) return;
+      if (!input) return;
 
-    const filteredRecommendations = recommendationsList.filter(rec => rec.toLowerCase().includes(input)).slice(0,2);
+      const filtered = recommendationsList.filter(rec => rec.toLowerCase().includes(input)).slice(0, 3);
 
-    filteredRecommendations.forEach(rec => {
-        const recElement = document.createElement('div');
-        recElement.className = 'recommendation-item';
-        recElement.innerText = rec;
-        recElement.addEventListener('click', () => {
-        document.getElementById('user-input').value = rec;
-        recommendationsDiv.innerHTML = '';
-        sendMessage(); // Automatically send the selected recommendation
+      filtered.forEach(rec => {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.innerText = rec;
+        chip.addEventListener('click', () => {
+          document.getElementById('user-input').value = rec;
+          recommendationsDiv.innerHTML = '';
+          sendMessage();
         });
-        recommendationsDiv.appendChild(recElement);
-    });
+        recommendationsDiv.appendChild(chip);
+      });
     }
-
   </script>
 </body>
 </html>
