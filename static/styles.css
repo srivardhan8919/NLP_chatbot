@@ -85,7 +85,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* Fallback for older browsers */
+  height: 100dvh; /* Dynamic viewport height */
   width: 100vw;
   overflow: hidden;
   transition: color 0.3s ease;
@@ -382,12 +383,15 @@ input[type="text"]:focus {
     align-items: flex-start;
   }
   .app-container {
-    height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height for mobile browsers */
     border-radius: 0;
     max-width: 100%;
     border: none;
+    display: flex;
+    flex-direction: column;
   }
   .input-area {
     border-radius: 0;
+    padding-bottom: max(16px, env(safe-area-inset-bottom)); /* Support for iPhone notch/home bar */
   }
 }
